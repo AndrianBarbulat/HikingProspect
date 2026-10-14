@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { FilterBar, type DifficultyFilter } from '../components/FilterBar'
 import { MapListToggle, type MobileView } from '../components/MapListToggle'
@@ -29,15 +29,14 @@ export function TrailsPage() {
     })
   }, [search, difficulty, maxDistance])
 
-  useEffect(() => {
-    if (selectedSlug && !filteredTrails.some((trail) => trail.slug === selectedSlug)) setSelectedSlug(null)
-  }, [filteredTrails, selectedSlug])
+  const activeSelectedSlug = filteredTrails.some((trail) => trail.slug === selectedSlug) ? selectedSlug : null
 
   function updateParam(key: string, value: string, defaultValue: string) {
     const next = new URLSearchParams(params)
     if (!value || value === defaultValue) next.delete(key)
     else next.set(key, value)
     setParams(next, { replace: true })
+    if (key !== 'view') setSelectedSlug(null)
   }
 
   function clearFilters() {
@@ -61,8 +60,8 @@ export function TrailsPage() {
       <header className="explore-header page-shell"><div><p className="eyebrow">Morrow Highlands · map sheet 04</p><h1>Explore sample trails</h1></div><SafetyNotice compact /></header>
       <div className="explore-controls page-shell"><SearchBar value={search} onChange={(value) => updateParam('q', value, '')} /><FilterBar difficulty={difficulty} maxDistance={maxDistance} hasFilters={hasFilters} onDifficultyChange={(value) => updateParam('difficulty', value, 'All')} onDistanceChange={(value) => updateParam('max', value, 'all')} onClear={clearFilters} /><MapListToggle value={mobileView} onChange={(value) => updateParam('view', value, 'list')} /></div>
       <div className="explore-layout page-shell">
-        <section className={`results-panel ${mobileView === 'map' ? 'mobile-hidden' : ''}`} aria-label="Trail results"><div className="results-panel__heading"><p aria-live="polite"><strong>{filteredTrails.length}</strong> {filteredTrails.length === 1 ? 'trail' : 'trails'} found</p><span>Select a card to locate it</span></div><TrailList trails={filteredTrails} selectedSlug={selectedSlug} cardRefs={cardRefs} onSelect={(trail) => setSelectedSlug(trail.slug)} onClear={clearFilters} /></section>
-        <section className={`map-panel ${mobileView === 'list' ? 'mobile-hidden' : ''}`} aria-label="Trail map"><MapView trails={filteredTrails} selectedSlug={selectedSlug} onSelect={selectFromMap} /></section>
+        <section className={`results-panel ${mobileView === 'map' ? 'mobile-hidden' : ''}`} aria-label="Trail results"><div className="results-panel__heading"><p aria-live="polite"><strong>{filteredTrails.length}</strong> {filteredTrails.length === 1 ? 'trail' : 'trails'} found</p><span>Select a card to locate it</span></div><TrailList trails={filteredTrails} selectedSlug={activeSelectedSlug} cardRefs={cardRefs} onSelect={(trail) => setSelectedSlug(trail.slug)} onClear={clearFilters} /></section>
+        <section className={`map-panel ${mobileView === 'list' ? 'mobile-hidden' : ''}`} aria-label="Trail map"><MapView trails={filteredTrails} selectedSlug={activeSelectedSlug} onSelect={selectFromMap} /></section>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { NavLink, useLocation } from 'react-router'
+import { useState } from 'react'
+import { NavLink } from 'react-router'
 import { BrandMark } from './BrandMark'
 
 const navigation = [
@@ -11,14 +11,11 @@ const navigation = [
 
 export function Header() {
   const [open, setOpen] = useState(false)
-  const location = useLocation()
-
-  useEffect(() => setOpen(false), [location.pathname])
 
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <NavLink className="brand" to="/" aria-label="Trailmark home">
+        <NavLink className="brand" to="/" aria-label="Trailmark home" onClick={() => setOpen(false)}>
           <BrandMark />
           <span>Trailmark</span>
         </NavLink>
@@ -34,11 +31,11 @@ export function Header() {
         </button>
         <nav id="primary-navigation" className={`primary-nav ${open ? 'primary-nav--open' : ''}`} aria-label="Primary navigation">
           {navigation.map((item) => (
-            <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => (isActive ? 'active' : undefined)}>
+            <NavLink key={item.to} to={item.to} end={item.end} onClick={() => setOpen(false)} className={({ isActive }) => (isActive ? 'active' : undefined)}>
               {item.label}
             </NavLink>
           ))}
-          <NavLink className="button button--small" to="/trails?view=map">Open map</NavLink>
+          <NavLink className="button button--small" to="/trails?view=map" onClick={() => setOpen(false)}>Open map</NavLink>
         </nav>
       </div>
     </header>
