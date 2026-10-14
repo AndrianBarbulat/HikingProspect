@@ -5,11 +5,11 @@ test('home navigation and desktop composition', async ({ page }, testInfo) => {
   await page.goto('/')
   await expect(page.getByRole('heading', { name: 'Find your line through the landscape.' })).toBeVisible()
   await expect(page.locator('.home-hero .leaflet-container')).toBeVisible()
-  await expect(page.getByText('Demonstration only').first()).toBeVisible()
+  await expect(page.getByText('Check current conditions').first()).toBeVisible()
   await page.screenshot({ path: testInfo.outputPath('home-desktop.png'), fullPage: true })
   await page.getByRole('link', { name: 'Explore trails', exact: true }).click()
   await expect(page).toHaveURL(/\/trails$/)
-  await expect(page.getByRole('heading', { name: 'Explore sample trails' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Explore park trails' })).toBeVisible()
 })
 
 test('desktop explorer search, filters, clear and no-results state', async ({ page }, testInfo) => {
@@ -20,9 +20,9 @@ test('desktop explorer search, filters, clear and no-results state', async ({ pa
   await expect(page.getByText('6 trails found')).toBeVisible()
 
   const search = page.getByRole('searchbox', { name: 'Search trails by name or location' })
-  await search.fill('Granite')
+  await search.fill('Quattervals')
   await expect(page.getByText('1 trail found')).toBeVisible()
-  await expect(page.getByText('Granite Crown', { exact: true }).first()).toBeVisible()
+  await expect(page.getByText('Piz Quattervals', { exact: true }).first()).toBeVisible()
   await page.getByRole('button', { name: 'Clear filters' }).click()
   await expect(page.getByText('6 trails found')).toBeVisible()
 
@@ -43,14 +43,14 @@ test('cards and markers keep selection in sync', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 })
   await page.goto('/trails')
 
-  await page.locator('.leaflet-marker-icon[title="Granite Crown"]').click()
-  await expect(page.getByRole('button', { name: 'Selected Granite Crown on map' })).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('[data-trail-card="granite-crown"]')).toHaveClass(/trail-card--selected/)
+  await page.locator('.leaflet-marker-icon[title="Munt la Schera"]').click()
+  await expect(page.getByRole('button', { name: 'Selected Munt la Schera on map' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('[data-trail-card="munt-la-schera"]')).toHaveClass(/trail-card--selected/)
 
-  const fernwoodCardButton = page.getByRole('button', { name: 'Show Fernwood Loop on map' })
-  await fernwoodCardButton.click()
-  await expect(page.getByRole('button', { name: 'Selected Fernwood Loop on map' })).toHaveAttribute('aria-pressed', 'true')
-  await expect(page.locator('.leaflet-popup').getByRole('heading', { name: 'Fernwood Loop' })).toBeVisible()
+  const grimmelsCardButton = page.getByRole('button', { name: 'Show Margun Grimmels on map' })
+  await grimmelsCardButton.click()
+  await expect(page.getByRole('button', { name: 'Selected Margun Grimmels on map' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('.leaflet-popup').getByRole('heading', { name: 'Margun Grimmels' })).toBeVisible()
 })
 
 test('mobile explorer toggles between list and map', async ({ page }, testInfo) => {
@@ -69,24 +69,26 @@ test('mobile explorer toggles between list and map', async ({ page }, testInfo) 
 
 test('trail detail navigation and direct loading work', async ({ page }) => {
   await page.goto('/trails')
-  await page.locator('[data-trail-card="ravens-ridge"]').getByRole('link', { name: 'View trail notes' }).click()
-  await expect(page).toHaveURL(/\/trails\/ravens-ridge$/)
-  await expect(page.getByRole('heading', { name: 'Raven’s Ridge', level: 1 })).toBeVisible()
+  await page.locator('[data-trail-card="margunet"]').getByRole('link', { name: 'View trail notes' }).click()
+  await expect(page).toHaveURL(/\/trails\/margunet$/)
+  await expect(page.getByRole('heading', { name: 'Margunet Nature Trail', level: 1 })).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Suggested equipment' })).toBeVisible()
   await expect(page.locator('.detail-map .leaflet-container')).toBeVisible()
 
-  await page.goto('/trails/fernwood-loop')
-  await expect(page.getByRole('heading', { name: 'Fernwood Loop', level: 1 })).toBeVisible()
-  await expect(page.getByText('Related sample trails')).toBeVisible()
+  await expect(page.getByRole('link', { name: /Swiss National Park route 17/ })).toHaveAttribute('href', 'https://nationalpark.ch/besuchen/routen/?offer=42087')
+
+  await page.goto('/trails/champloench')
+  await expect(page.getByRole('heading', { name: 'Champlönch', level: 1 })).toBeVisible()
+  await expect(page.getByText('Related park trails')).toBeVisible()
 })
 
 test('keyboard navigation reaches controls and selects a card', async ({ page }) => {
   await page.goto('/trails')
   await page.keyboard.press('Tab')
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused()
-  await page.getByRole('button', { name: 'Show Fernwood Loop on map' }).focus()
+  await page.getByRole('button', { name: 'Show Margun Grimmels on map' }).focus()
   await page.keyboard.press('Enter')
-  await expect(page.getByRole('button', { name: 'Selected Fernwood Loop on map' })).toBeFocused()
+  await expect(page.getByRole('button', { name: 'Selected Margun Grimmels on map' })).toBeFocused()
 })
 
 test('not-found route offers a useful recovery action', async ({ page }) => {

@@ -16,5 +16,7 @@ export interface Trail {
   equipment: string[]
   safetyNote: string
   featured: boolean
+  sourceLabel: string
+  sourceUrl: string
 }
 

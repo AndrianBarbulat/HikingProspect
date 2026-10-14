@@ -1,8 +1,8 @@
 # Trailmark
 
-Trailmark is a complete static frontend demonstration for exploring six fictional hiking trails on an interactive map. It combines a contemporary printed field guide with a restrained topographic-map aesthetic.
+Trailmark is a static guide to six published hiking routes in the Swiss National Park. It combines a contemporary printed field guide with a restrained topographic-map aesthetic.
 
-> **Demonstration only:** Trail locations and details are illustrative and must not be used for navigation or safety decisions.
+> **Check current conditions:** Verify route status, weather, transport and park rules with the Swiss National Park before setting out.
 
 ## Features
 
@@ -11,7 +11,7 @@ Trailmark is a complete static frontend demonstration for exploring six fictiona
 - URL-backed filter and mobile-view state
 - Custom Leaflet markers with synchronized card/marker selection
 - Accessible mobile Map/List segmented control
-- Reusable detail page for all six sample trails
+- Reusable detail page for all six park trails, with links to official route information
 - Planning, about and useful not-found pages
 - Keyboard navigation, visible focus states and reduced-motion support
 - Direct-route support for Vercel through an SPA rewrite
@@ -55,7 +55,7 @@ The Playwright configuration uses the local Google Chrome executable on Windows.
 ```text
 src/
 ├── components/   Shared navigation, filters, cards and notices
-├── data/         Typed fictional trail catalogue
+├── data/         Typed trail catalogue and official source links
 ├── map/          Leaflet map and custom marker components
 ├── pages/        Route-level page components
 ├── styles/       Design tokens and responsive layout system
@@ -94,10 +94,12 @@ The output is written to `dist/`. For a Vercel preview:
 npx vercel
 ```
 
-`vercel.json` rewrites all application routes to `index.html`, so directly opening a URL such as `/trails/fernwood-loop` works correctly.
+`vercel.json` rewrites all application routes to `index.html`, so directly opening a URL such as `/trails/margunet` works correctly.
 
 ## Data and map attribution
 
-Every trail name, coordinate, location, description and access note in this repository is fictional demonstration data. The points are illustrative and do not represent route lines.
+Route facts are based on information published by the [Swiss National Park](https://nationalpark.ch/en/visit/trails-routes/) and were checked on 15 October 2026. Each trail detail page links to the corresponding official route. Conditions can change, so the site intentionally does not cache open or closed status.
+
+Map markers identify trailheads and do not represent route geometry. Use official topographic mapping and current local advice for navigation.
 
 Map data and tiles: [© OpenStreetMap contributors](https://www.openstreetmap.org/copyright).

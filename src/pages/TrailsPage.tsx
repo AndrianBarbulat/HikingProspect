@@ -57,7 +57,7 @@ export function TrailsPage() {
 
   return (
     <div className="explore-page">
-      <header className="explore-header page-shell"><div><p className="eyebrow">Morrow Highlands · map sheet 04</p><h1>Explore sample trails</h1></div><SafetyNotice compact /></header>
+      <header className="explore-header page-shell"><div><p className="eyebrow">Swiss National Park · Engadin</p><h1>Explore park trails</h1></div><SafetyNotice compact /></header>
       <div className="explore-controls page-shell"><SearchBar value={search} onChange={(value) => updateParam('q', value, '')} /><FilterBar difficulty={difficulty} maxDistance={maxDistance} hasFilters={hasFilters} onDifficultyChange={(value) => updateParam('difficulty', value, 'All')} onDistanceChange={(value) => updateParam('max', value, 'all')} onClear={clearFilters} /><MapListToggle value={mobileView} onChange={(value) => updateParam('view', value, 'list')} /></div>
       <div className="explore-layout page-shell">
         <section className={`results-panel ${mobileView === 'map' ? 'mobile-hidden' : ''}`} aria-label="Trail results"><div className="results-panel__heading"><p aria-live="polite"><strong>{filteredTrails.length}</strong> {filteredTrails.length === 1 ? 'trail' : 'trails'} found</p><span>Select a card to locate it</span></div><TrailList trails={filteredTrails} selectedSlug={activeSelectedSlug} cardRefs={cardRefs} onSelect={(trail) => setSelectedSlug(trail.slug)} onClear={clearFilters} /></section>
