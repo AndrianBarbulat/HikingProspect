@@ -94,7 +94,7 @@ The output is written to `dist/`. For a Vercel preview:
 npx vercel
 ```
 
-`vercel.json` rewrites all application routes to `index.html`, so directly opening a URL such as `/trails/margunet` works correctly.
+`vercel.json` and `public/_redirects` provide SPA fallbacks for Vercel and Netlify, so directly opening or refreshing a URL such as `/trails/margunet` works correctly.
 
 ## Data and map attribution
 
